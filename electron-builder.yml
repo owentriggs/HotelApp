@@ -1,0 +1,39 @@
+appId: com.hotelapp.desktop
+productName: HotelApp
+copyright: Copyright © HotelApp
+
+directories:
+  output: release
+
+files:
+  - dist-electron/**/*
+  - dist/renderer/**/*
+  - package.json
+  - node_modules/**/*
+
+asarUnpack:
+  - node_modules/better-sqlite3/**/*
+
+mac:
+  # Electron 25 is pinned for macOS High Sierra (10.13) support — see project memory / plan.
+  # Building the mac target must be done on a Mac (native module + notarization tooling).
+  target:
+    - target: dmg
+      arch: [x64]
+    - target: zip
+      arch: [x64]
+  category: public.app-category.business
+  # High Sierra predates current notarization requirements/tooling reliably supporting it;
+  # notarization is left off here. If you have a Developer ID and want signed+notarized
+  # builds for newer Macs too, configure `mac.identity` / `afterSign` separately.
+  hardenedRuntime: false
+  gatekeeperAssess: false
+
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
