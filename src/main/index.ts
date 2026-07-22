@@ -10,6 +10,12 @@ import { registerIpcHandlers } from "./ipcHandlers";
 // full OS sandbox is an acceptable tradeoff to avoid that crash. Must be set before 'ready'.
 app.commandLine.appendSwitch("no-sandbox");
 
+// Chromium's GPU process (Metal/ANGLE backend) is a separate common SIGSEGV source on old
+// Macs whose GPU drivers predate what this Chromium version expects. This app is a simple
+// CRUD/forms UI with no need for GPU-accelerated rendering, so falling back to software
+// rendering entirely avoids that crash path.
+app.disableHardwareAcceleration();
+
 // Only use the Vite dev server when explicitly requested (see npm script "dev:electron").
 // Previously this was `!app.isPackaged`, which is true for any unpacked run (including
 // `npm start`), forcing every non-installer run to depend on a live dev server at
