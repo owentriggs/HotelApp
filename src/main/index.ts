@@ -3,6 +3,13 @@ import path from "path";
 import { initDb } from "../db";
 import { registerIpcHandlers } from "./ipcHandlers";
 
+// Chromium's OS-level sandbox (distinct from webPreferences.sandbox, which only affects
+// the renderer) causes an immediate SIGSEGV on some older macOS setups (observed on
+// High Sierra 10.13) when the app isn't code-signed with the right entitlements. This app
+// never loads untrusted remote content — only our own bundled files — so disabling the
+// full OS sandbox is an acceptable tradeoff to avoid that crash. Must be set before 'ready'.
+app.commandLine.appendSwitch("no-sandbox");
+
 // Only use the Vite dev server when explicitly requested (see npm script "dev:electron").
 // Previously this was `!app.isPackaged`, which is true for any unpacked run (including
 // `npm start`), forcing every non-installer run to depend on a live dev server at
