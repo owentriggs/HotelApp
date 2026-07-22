@@ -14,8 +14,14 @@ is still in use. See `.npmrc` (`target=25.9.8`) and `package.json`.
 
 ```bash
 npm install
-npm run dev          # starts the Vite dev server on :5173
-npm start            # in a second terminal: builds main/preload/db and launches Electron
+npm start            # builds everything and launches the app — self-contained, no dev server needed
+```
+
+For live-reloading development against Vite instead (rebuild renderer on save):
+
+```bash
+npm run dev           # terminal 1: starts the Vite dev server on :5173
+npm run dev:electron  # terminal 2: launches Electron pointed at that dev server
 ```
 
 Default login on first run: **admin** / **admin** (change the password via

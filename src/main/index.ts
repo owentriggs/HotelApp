@@ -3,7 +3,11 @@ import path from "path";
 import { initDb } from "../db";
 import { registerIpcHandlers } from "./ipcHandlers";
 
-const isDev = !app.isPackaged;
+// Only use the Vite dev server when explicitly requested (see npm script "dev:electron").
+// Previously this was `!app.isPackaged`, which is true for any unpacked run (including
+// `npm start`), forcing every non-installer run to depend on a live dev server at
+// localhost:5173 even when it wasn't running.
+const isDev = process.env.HOTELAPP_DEV_SERVER === "1";
 
 function createWindow() {
   const win = new BrowserWindow({
